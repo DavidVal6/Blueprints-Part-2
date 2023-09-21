@@ -5,10 +5,13 @@
  */
 package edu.eci.arsw.blueprints.model;
 
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author hcadavid
  */
+@Component
 public class Point {
    
     private int x;

@@ -19,12 +19,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
  *
  * @author hcadavid
  */
+@Component
 @Service
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
