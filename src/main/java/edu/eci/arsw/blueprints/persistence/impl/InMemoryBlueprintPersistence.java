@@ -92,5 +92,17 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         Set<Blueprint> bluePrints = new HashSet<>(bluePrintsCollection);
         return bluePrints;
     }
+
+    @Override
+    public void addBluePrintByParameters(String author, String bpName, List<List<Integer>> points) throws BlueprintPersistenceException {
+        List<Point> newPoints = new ArrayList<>();
+        for(List<Integer> listIn : points){
+            newPoints.add(new Point(listIn.get(0),listIn.get(1)));
+        }
+        Point[] pts=newPoints.toArray(new Point[0]);
+        Blueprint bp=new Blueprint(author, bpName, pts);
+        
+        saveBlueprint(bp);
+    }
     
 }

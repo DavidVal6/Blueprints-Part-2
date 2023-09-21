@@ -40,6 +40,17 @@ public class BlueprintsServices {
         bpp.saveBlueprint(bp);
     }
     
+    /**
+     * 
+     * @param author blueprint's author
+     * @param bpname blueprint's name
+     * @param List<Point> blueprint's points
+     * @throws BlueprintNotFoundException if the operation fails
+     */
+    public void addBluePrintByParameters(String author, String bpName, List<List<Integer>> points) throws BlueprintPersistenceException{
+        bpp.addBluePrintByParameters(author, bpName, points);
+    }
+
     public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException{
         return bpp.getAllBlueprints();
     }
@@ -108,4 +119,6 @@ public class BlueprintsServices {
         return filteredList;
         //throw new UnsupportedOperationException("Not supported yet."); 
     }
+
+    
 }
