@@ -1,0 +1,20 @@
+Qué condiciones de carrera se podrían presentar?
+
+R:/ En este caso pueden ocurrir varios problemas de concurrencia que se pueden ejemplificar en las siguientes 2 condiciones de carrera:
+    1- Querer actualizar un plano especifico mientras se consulta dicho plano
+    2- Querer registrar un plano especifico mientras se consulta todos los planos
+
+    Basicamente querer realizar operaciones simultaneas sobre el mismo plano
+
+Cuales son las respectivas regiones críticas?
+
+R:/ Despues de analizar el funcionamiento de la aplicación y de observar que tienen en común las condiciones de carrera,
+    llegamos a la conclusion de que la region critica esta dada por la colección de planos manejada en la implementacion de 
+    la persistencia, es decir, en este caso la colección blueprints de la clase InMemoryBlueprintPersistence.java, pues es 
+    donde se encuentran localizados todos los planos y al recurso que hay que acceder ya sea para consultar, actualizar o 
+    registrar los planos.
+
+
+Para dar solución a este problema planteamos que la colección blueprints fuera de tipo atomico.
+Por lo tanto ahora dicha colección es un ConcurrentHashMap.
+
