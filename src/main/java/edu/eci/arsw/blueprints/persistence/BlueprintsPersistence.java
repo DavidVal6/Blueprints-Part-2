@@ -64,4 +64,12 @@ public interface BlueprintsPersistence {
      */
     public void addBluePrintByParameters(String author, String bpName, List<List<Integer>> points) throws BlueprintPersistenceException;
     
+    /**
+     * @param author blueprint's author
+     * @param bprintname blueprint's author
+     * @param points blueprint's points
+     * @throws BlueprintPersistenceException if a blueprint with the same name already exists,
+     *    or any other low-level persistence error occurs.
+     */
+    public void updateBlueprint(String newAuthor, String newName, List<List<Integer>> newPoints, Blueprint bp) throws BlueprintNotFoundException;
 }

@@ -51,6 +51,19 @@ public class BlueprintsServices {
         bpp.addBluePrintByParameters(author, bpName, points);
     }
 
+    /**
+     * 
+     * @param author blueprint's author
+     * @param bpname blueprint's name
+     * @param List<Point> blueprint's points
+     * @throws BlueprintNotFoundException if the operation fails
+     */
+    public void updateBlueprint(String author, String bpName, String newAuthor, String newName, List<List<Integer>> newPoints) throws BlueprintNotFoundException{
+        Blueprint bp = bpp.getBlueprint(author, bpName);
+        bpp.updateBlueprint(newAuthor, newName, newPoints, bp);
+    }
+
+
     public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException{
         return bpp.getAllBlueprints();
     }

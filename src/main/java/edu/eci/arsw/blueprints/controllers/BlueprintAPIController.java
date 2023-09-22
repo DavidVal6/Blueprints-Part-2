@@ -91,7 +91,7 @@ public class BlueprintAPIController {
     }
     
     @RequestMapping(value = "/addBp", method = RequestMethod.POST)	
-    public ResponseEntity<?> manejadorPostRecursoXX(@RequestBody String data){
+    public ResponseEntity<?> manejadorPostBlueprint(@RequestBody String data){
         try {
             if(data == null){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -101,7 +101,7 @@ public class BlueprintAPIController {
             BpData blueprint = gson.fromJson(data, BpData.class);
             // Acceder a los valores dentro del objeto Java
             String author = blueprint.author;
-            String bpName = blueprint.bpName;
+            String bpName = blueprint.name;
             List<Point> points = blueprint.points;
             List<List<Integer>> realPoints = new ArrayList<>();
             for (Point p: points){
@@ -118,11 +118,53 @@ public class BlueprintAPIController {
 
     class BpData {
         String author;
-        String bpName;
+        String name;
         List<Point> points;
     }
 
     class Point {
+        int x;
+        int y;
+    }
+
+    @RequestMapping(value = "/updateBp", method = RequestMethod.PUT) //{"author":"authorname","newPoints":[{"x":140,"y":140},{"x":115,"y":115}],"name":"bpname", 
+                                                                        // "newAuthor" : "newAuthorName", "newName" : "newBluepName"}
+    public ResponseEntity<?> manejadorPutBlueprint(@RequestBody String data){
+        try {
+            if(data == null){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            Gson gson = new Gson();
+            // Analizar el JSON en un objeto Java
+            NewBpData blueprint = gson.fromJson(data, NewBpData.class);
+            // Acceder a los valores dentro del objeto Java
+            String author = blueprint.author;
+            String bpName = blueprint.name;
+            String newAuthor = blueprint.newAuthor;
+            String newName = blueprint.newName;
+            List<newPoint> points = blueprint.newPoints;
+            List<List<Integer>> newPoints = new ArrayList<>();
+            for (newPoint p: points){
+                newPoints.add(Arrays.asList(p.x,p.y));
+            }
+            bps.updateBlueprint(author, bpName, newAuthor, newName, newPoints);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BlueprintNotFoundException ex) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("Error bla bla bla", HttpStatus.CONFLICT);
+        }        
+
+    }
+
+    class NewBpData {
+        String author;
+        String name;
+        String newAuthor;
+        String newName;
+        List<newPoint> newPoints;
+    }
+
+    class newPoint {
         int x;
         int y;
     }
