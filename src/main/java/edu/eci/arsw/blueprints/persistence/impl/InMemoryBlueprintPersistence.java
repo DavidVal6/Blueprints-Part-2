@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
 
-    private final Map<Tuple<String,String>,Blueprint> blueprints=new HashMap<>();
+    private final Map<Tuple<String,String>,Blueprint> blueprints=new ConcurrentHashMap<>();
 
     public InMemoryBlueprintPersistence() {
         //load stub data
@@ -59,7 +60,7 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         }
         else{
             blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
-        }        
+        }
     }
 
     @Override
@@ -92,5 +93,30 @@ public class InMemoryBlueprintPersistence implements BlueprintsPersistence{
         Set<Blueprint> bluePrints = new HashSet<>(bluePrintsCollection);
         return bluePrints;
     }
+
+    @Override
+    public void addBluePrintByParameters(String author, String bpName, List<List<Integer>> points) throws BlueprintPersistenceException {
+        List<Point> newPoints = new ArrayList<>();
+        for(List<Integer> listIn : points){
+            newPoints.add(new Point(listIn.get(0),listIn.get(1)));
+        }
+        Point[] pts=newPoints.toArray(new Point[0]);
+        Blueprint bp=new Blueprint(author, bpName, pts);
+        
+        saveBlueprint(bp);
+    }
+
+    @Override
+    public void updateBlueprint(String newAuthor, String newName, List<List<Integer>> newPoints, Blueprint bp)
+            throws BlueprintNotFoundException {
+        List<Point> nPoints = new ArrayList<>();
+        for(List<Integer> listIn : newPoints){
+            nPoints.add(new Point(listIn.get(0),listIn.get(1)));
+        }
+        blueprints.remove(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+        bp.update(newAuthor, newName, nPoints);
+        blueprints.put(new Tuple<>(bp.getAuthor(),bp.getName()), bp);
+    }
+    
     
 }

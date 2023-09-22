@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.model.Point;
 
 /**
  *
@@ -53,4 +54,22 @@ public interface BlueprintsPersistence {
      * @throws BlueprintNotFoundException if there is no such blueprint
      */
     public Set<Blueprint> getAllBlueprints() throws BlueprintNotFoundException;
+
+    /**
+     * @param author blueprint's author
+     * @param bprintname blueprint's author
+     * @param points blueprint's points
+     * @throws BlueprintPersistenceException if a blueprint with the same name already exists,
+     *    or any other low-level persistence error occurs.
+     */
+    public void addBluePrintByParameters(String author, String bpName, List<List<Integer>> points) throws BlueprintPersistenceException;
+    
+    /**
+     * @param author blueprint's author
+     * @param bprintname blueprint's author
+     * @param points blueprint's points
+     * @throws BlueprintPersistenceException if a blueprint with the same name already exists,
+     *    or any other low-level persistence error occurs.
+     */
+    public void updateBlueprint(String newAuthor, String newName, List<List<Integer>> newPoints, Blueprint bp) throws BlueprintNotFoundException;
 }
